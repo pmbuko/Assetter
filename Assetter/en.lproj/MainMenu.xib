@@ -910,7 +910,6 @@
 											<string key="NSFrame">{{59, 39}, {156, 17}}</string>
 											<reference key="NSSuperview" ref="438699239"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView"/>
 											<string key="NSReuseIdentifierKey">_NS:1535</string>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="1009725105">
