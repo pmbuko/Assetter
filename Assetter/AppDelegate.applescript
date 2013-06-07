@@ -38,14 +38,14 @@ script AppDelegate
         log "Script Error: " & theError
     end errorOut_
     
-    -- Get asset tag info or set it if it is not present.
+    -- Get asset tag info or set it if not present.
     on assetTag_(sender)
         try 
-            set my myAT to do shell script "nvram asset-tag | awk '{print $2}'"
+            set my myAT to do shell script "/usr/sbin/nvram asset-tag | /usr/bin/awk '{print $2}'"
             if myAT is "" then
-                set myAT to text returned of (display dialog "No asset tag found. Please enter my asset tag:" default answer "")
-                set thePassword to text returned of (display dialog "Enter your admin password to save asset tag to nvram:" default answer "" with hidden answer)
-                do shell script "/bin/echo '" & thePassword & "' | sudo -S nvram asset-tag='" & myAT & "'"
+                set my myAT to text returned of (display dialog "Asset tag not set. Please enter it now:" default answer "")
+                set thePassword to text returned of (display dialog "Enter your password to write asset tag to NVRAM:" default answer "" with hidden answer)
+                do shell script "/bin/echo '" & thePassword & "' | /usr/bin/sudo -S /usr/sbin/nvram asset-tag='" & myAT & "'"
             end if
         on error theError
             errorOut_(theError)
@@ -55,24 +55,24 @@ script AppDelegate
     -- Gather system information and place values into properties that are bound to text fields in the GUI.
     on getSysInfo_(sender)
         try
-            set my myHostname to (do shell script "scutil --get ComputerName")
-            set my myModel to (do shell script "system_profiler SPHardwareDataType | awk -F': ' '/Model Name/{print $2}'")
-            set my mySN to (do shell script "system_profiler SPHardwareDataType | awk -F': ' '/Serial Number/{print $2}'")
+            set my myHostname to (do shell script "/usr/sbin/scutil --get ComputerName")
+            set my myModel to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Model Name/{print $2}'")
+            set my mySN to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Serial Number/{print $2}'")
             
-            set my myMem to (do shell script "system_profiler SPHardwareDataType | awk -F': ' '/Memory/{print $2}'")
-            set my myHDs to (do shell script "diskutil list | awk '/0:/{sub(/\\*/,\"\");print $3, $4, $5}'")
-            set my myHDsizes to (do shell script "diskutil list | awk '/0:/{sub(/\\*/,\"\");print $3, $4}'")
-            set my myHDdevs to (do shell script "diskutil list | awk '/0:/{sub(/\\*/,\"\");print $5}'")
+            set my myMem to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Memory/{print $2}'")
+            set my myHDs to (do shell script "/usr/sbin/diskutil list | /usr/bin/awk '/0:/{sub(/\\*/,\"\");printf \"%9s %s - %s\\n\", $3, $4, $5}'")
+            set my myHDsizes to (do shell script "/usr/sbin/diskutil list | /usr/bin/awk '/0:/{sub(/\\*/,\"\");printf \"%s %s\\n\", $3, $4}'")
+            set my myHDdevs to (do shell script "/usr/sbin/diskutil list | /usr/bin/awk '/0:/{sub(/\\*/,\"\");print $5}'")
             
-            set my myNics to (do shell script "networksetup -listnetworkserviceorder | awk '/: en/{printf \"%s \", substr($NF, 1, 3)}'")
+            set my myNics to (do shell script "/usr/sbin/networksetup -listnetworkserviceorder | /usr/bin/awk '/: en/{printf \"%s \", substr($NF, 1, 3)}'")
             set my myNic1 to first word of myNics
             set my myNic2 to second word of myNics
-            set my myNic1ip to (do shell script "ifconfig " & myNic1 & " inet | awk '/inet /{print $2}'")
+            set my myNic1ip to (do shell script "/sbin/ifconfig " & myNic1 & " inet | /usr/bin/awk '/inet /{print $2}'")
             if myNic1ip = "" then set my myNic1ip to "-- no ip --"
-            set my myNic2ip to (do shell script "ifconfig " & myNic2 & " inet | awk '/inet /{print $2}'")
+            set my myNic2ip to (do shell script "/sbin/ifconfig " & myNic2 & " inet | /usr/bin/awk '/inet /{print $2}'")
             if myNic2ip = "" then set my myNic1ip to "-- no ip --"
-            set my myNic1mac to (do shell script "ifconfig " & myNic1 & " ether | awk '/ether /{print $2}'")
-            set my myNic2mac to (do shell script "ifconfig " & myNic2 & " ether | awk '/ether /{print $2}'")
+            set my myNic1mac to (do shell script "/sbin/ifconfig " & myNic1 & " ether | /usr/bin/awk '/ether /{print $2}'")
+            set my myNic2mac to (do shell script "/sbin/ifconfig " & myNic2 & " ether | /usr/bin/awk '/ether /{print $2}'")
         on error theError
             errorOut_(theError)
         end try
@@ -82,17 +82,17 @@ script AppDelegate
     on exportButton_(sender)
         set my outputFile to ((path to desktop as string) & myHostname & "_ASSETS.txt")
         set posixFile to POSIX path of outputFile
-        set my theContent to "==============
-Hostname:      " & myHostname & "
-Model:         " & myModel & "
-Serial Number: " & mySN & "
-Asset Tag:     " & myAT & "
-Memory:        " & myMem & "
-Nic 1 IP:      " & myNic1ip & "
-Nic 1 MAC:     " & myNic1mac & "
-Nic 2 IP:      " & myNic2ip & "
-Nic 2 MAC:     " & myNic2mac & "
-Hard Drive(s):
+        set my theContent to ¬
+"Hostname : " & myHostname & "
+Model : " & myModel & "
+Serial Number : " & mySN & "
+Asset Tag : " & myAT & "
+Memory : " & myMem & "
+" & myNic1 & " IP : " & myNic1ip & "
+" & myNic1 & " MAC : " & myNic1mac & "
+" & myNic2 & " IP : " & myNic2ip & "
+" & myNic2 & " MAC : " & myNic2mac & "
+Drives :
 " & myHDs
         
         try
