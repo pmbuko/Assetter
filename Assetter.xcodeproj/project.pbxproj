@@ -14,6 +14,7 @@
 		39E1424C1760F25E00503FB1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 39E1424A1760F25E00503FB1 /* Credits.rtf */; };
 		39E1424E1760F25E00503FB1 /* AppDelegate.applescript in Sources */ = {isa = PBXBuildFile; fileRef = 39E1424D1760F25E00503FB1 /* AppDelegate.applescript */; };
 		39E142511760F25E00503FB1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39E1424F1760F25E00503FB1 /* MainMenu.xib */; };
+		39E1425817611F9300503FB1 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 39E1425717611F9300503FB1 /* icon.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		39E1424B1760F25E00503FB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		39E1424D1760F25E00503FB1 /* AppDelegate.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = AppDelegate.applescript; sourceTree = "<group>"; };
 		39E142501760F25E00503FB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		39E1425717611F9300503FB1 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		39E142421760F25E00503FB1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				39E1425717611F9300503FB1 /* icon.icns */,
 				39E142431760F25E00503FB1 /* Assetter-Info.plist */,
 				39E142441760F25E00503FB1 /* InfoPlist.strings */,
 				39E142471760F25E00503FB1 /* main.m */,
@@ -158,6 +161,7 @@
 				39E142461760F25E00503FB1 /* InfoPlist.strings in Resources */,
 				39E1424C1760F25E00503FB1 /* Credits.rtf in Resources */,
 				39E142511760F25E00503FB1 /* MainMenu.xib in Resources */,
+				39E1425817611F9300503FB1 /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +271,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Assetter/Assetter-Prefix.pch";
 				INFOPLIST_FILE = "Assetter/Assetter-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -279,7 +285,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Assetter/Assetter-Prefix.pch";
 				INFOPLIST_FILE = "Assetter/Assetter-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -303,6 +311,7 @@
 				39E142561760F25E00503FB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
