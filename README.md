@@ -1,9 +1,8 @@
 Assetter
 ========
+![Assetter icon](http://yourmacguy.files.wordpress.com/2013/06/assetter-icon.png "Assetter icon" )
 
-[logo]: http://yourmacguy.files.wordpress.com/2013/06/assetter-icon.png "Assetter icon"
-
-A simple Mac app that displays asset info in a window. Features include the following:
+Assetter is a simple Mac app that displays asset info in a window. Features include the following:
 
 * On first launch, Assetter prompts you for the computer’s asset tag if it has not yet been set.
 * The asset tag is stored in the computer’s NVRAM so it is not lost when the disk is replaced or re-imaged.
@@ -17,4 +16,4 @@ A simple Mac app that displays asset info in a window. Features include the foll
  * ip address and hardware address of network interfaces
 * The data displayed can be exported to a text file on the desktop with the push of a button.
 
-Note, the logo is freeware for personal, non-commercial use [from this iconfactory.com icon pack](http://iconfactory.com/freeware/preview/tosp). Still, I felt it proper to request specific permission. I'm awaiting a response.
+Note, the logo is freeware for personal, non-commercial use [from this iconfactory.com icon pack](http://iconfactory.com/freeware/preview/tosp). I felt it proper to request specific permission to use it and I'm awaiting a response.
