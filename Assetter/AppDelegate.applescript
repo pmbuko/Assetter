@@ -3,8 +3,28 @@
 --  Assetter
 --
 --  Created by Peter Bukowinski on 6/6/13.
---  Copyright (c) 2013 Peter Bukowinski. All rights reserved.
+--  
+--  This software is released under the terms of the MIT license.
+--  Copyright (C) 2013 by Peter Bukowinski
 --
+--  Permission is hereby granted, free of charge, to any person obtaining a copy
+--  of this software and associated documentation files (the "Software"), to deal
+--  in the Software without restriction, including without limitation the rights
+--  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+--  copies of the Software, and to permit persons to whom the Software is
+--  furnished to do so, subject to the following conditions:
+--
+--  The above copyright notice and this permission notice shall be included in
+--  all copies or substantial portions of the Software.
+--
+--  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+--  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+--  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+--  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+--  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+--  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+--  THE SOFTWARE.
+
 
 script AppDelegate
 --- CLASSES ---
@@ -57,7 +77,7 @@ script AppDelegate
         try
             set my myHostname to (do shell script "/usr/sbin/scutil --get ComputerName")
             set my myModel to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Model Name/{print $2}'")
-            set my mySN to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Serial Number/{print $2}'")
+            set my mySN to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Serial Number \\(system\\)/{print $2}'")
             
             set my myMem to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Memory/{print $2}'")
             set my myHDs to (do shell script "/usr/sbin/diskutil list | /usr/bin/awk '/0:/{sub(/\\*/,\"\");printf \"%9s %s - %s\\n\", $3, $4, $5}'")
@@ -70,7 +90,7 @@ script AppDelegate
             set my myNic1ip to (do shell script "/sbin/ifconfig " & myNic1 & " inet | /usr/bin/awk '/inet /{print $2}'")
             if myNic1ip = "" then set my myNic1ip to "-- no ip --"
             set my myNic2ip to (do shell script "/sbin/ifconfig " & myNic2 & " inet | /usr/bin/awk '/inet /{print $2}'")
-            if myNic2ip = "" then set my myNic1ip to "-- no ip --"
+            if myNic2ip = "" then set my myNic2ip to "-- no ip --"
             set my myNic1mac to (do shell script "/sbin/ifconfig " & myNic1 & " ether | /usr/bin/awk '/ether /{print $2}'")
             set my myNic2mac to (do shell script "/sbin/ifconfig " & myNic2 & " ether | /usr/bin/awk '/ether /{print $2}'")
         on error theError
