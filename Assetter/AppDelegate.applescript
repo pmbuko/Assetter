@@ -50,12 +50,15 @@ script AppDelegate
 --- OTHER PROPERTIES ---
     property outputFile : ""
     property theContent : ""
+    property isIdle : true
+    property doneLoading : false
+    property pwGood : false
     
 --- HANDLERS ---
 
     -- General error handler, writes to Console.
     on errorOut_(theError)
-        log "Script Error: " & theError
+        log "Error: " & theError
     end errorOut_
     
     -- Get asset tag info or set it if not present.
@@ -63,9 +66,21 @@ script AppDelegate
         try 
             set my myAT to do shell script "/usr/sbin/nvram asset-tag | /usr/bin/awk '{print $2}'"
             if myAT is "" then
-                set my myAT to text returned of (display dialog "Asset tag not set. Please enter it now:" default answer "")
-                set thePassword to text returned of (display dialog "Enter your password to write asset tag to NVRAM:" default answer "" with hidden answer)
-                do shell script "/bin/echo '" & thePassword & "' | /usr/bin/sudo -S /usr/sbin/nvram asset-tag='" & myAT & "'"
+                set my myAT to text returned of (display dialog "Asset tag is not set. Please enter it now:" default answer "" buttons {"Cancel", "OK"} default button 2 )
+                try -- This try block traps for incorrect passwords
+                    set thePassword to text returned of (display dialog "Enter your password to write asset tag to NVRAM:" default answer "" with hidden answer)
+                    do shell script "/bin/echo '" & thePassword & "' | /usr/bin/sudo -S /usr/sbin/nvram asset-tag='" & myAT & "'"
+                    set my pwGood to true
+                    do shell script "/usr/bin/sudo -k" -- Expire sudo session immediately upon success
+                on error -- This block runs if first password attempt is incorrect
+                    repeat until pwGood is true
+                        try
+                            set thePassword to text returned of (display dialog "Incorrect password. Please try again:" default answer "" with icon 2 with hidden answer)
+                            do shell script "/bin/echo '" & thePassword & "' | /usr/bin/sudo -S /usr/sbin/nvram asset-tag='" & myAT & "'"
+                            set my pwGood to true
+                        end try
+                    end repeat
+                end try
             end if
         on error theError
             errorOut_(theError)
@@ -101,7 +116,6 @@ script AppDelegate
     -- Export data to text file on the desktop when export button is pushed, overwriting existing file
     on exportButton_(sender)
         set my outputFile to ((path to desktop as string) & myHostname & "_ASSETS.txt")
-        set posixFile to POSIX path of outputFile
         set my theContent to ¬
 "Hostname : " & myHostname & "
 Model : " & myModel & "
@@ -115,23 +129,26 @@ Memory : " & myMem & "
 Drives :
 " & myHDs
         
-        try
+        try -- Write data out to file
             set fileRef to (open for access current application's file outputFile with write permission)
             set eof fileRef to 0
             write theContent to fileRef as text
             close access fileRef
         on error theError
-            try
+            try -- Close out the file reference in case of error
                 close access fileRef
             end try
             errorOut_(theError)
         end try
     end exportButton_
-        
+    
     -- This block is run when the app is launched
 	on applicationWillFinishLaunching_(aNotification)
+        set my isIdle to false
         assetTag_(me)
         getSysInfo_(me)
+        set my isIdle to true
+        set my doneLoading to true
 	end applicationWillFinishLaunching_
 	
 	on applicationShouldTerminate_(sender)
