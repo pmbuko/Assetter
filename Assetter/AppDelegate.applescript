@@ -33,6 +33,7 @@ script AppDelegate
 --- OBJECTS ---
     property myHostname : missing value
     property myModel :    missing value
+    property myOS :       missing value
     property mySN :       missing value
     property myAT :       missing value
     property myMem :      missing value
@@ -90,9 +91,10 @@ script AppDelegate
     -- Gather system information and place values into properties that are bound to text fields in the GUI.
     on getSysInfo_(sender)
         try
-            set my myHostname to (do shell script "/usr/sbin/scutil --get ComputerName")
-            set my myModel to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Model Name/{print $2}'")
-            set my mySN to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Serial Number \\(system\\)/{print $2}'")
+            set my myHostname to host name of (get system info)
+            set my myModel to (do shell script "/usr/sbin/sysctl -n hw.model")
+            set my myOS to get system version of (get system info)
+            set my mySN to (do shell script "/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F\\\" '/IOPlatformSerialNumber/{print $4}'")
             
             set my myMem to (do shell script "/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/awk -F': ' '/Memory/{print $2}'")
             set my myHDs to (do shell script "/usr/sbin/diskutil list | /usr/bin/awk '/0:/{sub(/\\*/,\"\");printf \"%9s %s - %s\\n\", $3, $4, $5}'")
@@ -119,6 +121,7 @@ script AppDelegate
         set my theContent to ¬
 "Hostname : " & myHostname & "
 Model : " & myModel & "
+OS Version : " & myOS & "
 Serial Number : " & mySN & "
 Asset Tag : " & myAT & "
 Memory : " & myMem & "
