@@ -10,10 +10,10 @@ Assetter is a simple Mac app that displays asset info in a window. Features incl
  * hostname
  * model
  * serial number
- * vasset tag
+ * asset tag
  * memory
  * size and number of drives
  * ip address and hardware address of network interfaces
 * The data displayed can be exported to a text file on the desktop with the push of a button.
 
-Note, the logo is freeware for personal, non-commercial use [from this iconfactory.com icon pack](http://iconfactory.com/freeware/preview/tosp). I felt it proper to request specific permission to use it and I'm awaiting a response.
+Note, the logo is freeware for personal, non-commercial use [from this iconfactory.com icon pack](http://iconfactory.com/freeware/preview/tosp).
